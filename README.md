@@ -14,7 +14,7 @@ Every SaaS is being asked the same question right now: *"can I just tell it what
 
 ## The concept
 
-Converting a SaaS to agents isn't about calling a chat API. It's three architectural decisions, and this template takes a position on each:
+Converting a SaaS to agents isn't about calling a chat API. It's four architectural decisions, and this template takes a position on each:
 
 **1. Agent tools are your existing API.**
 An agent "tool" here is a thin wrapper around a REST endpoint your product already exposes. No parallel business logic, no second source of truth. Point `SAAS_API_URL` at your backend and the agent operates your product the same way your frontend does. Until you do, every tool runs an in-process mock that produces identical responses — so the entire platform works offline, from first clone.
@@ -24,6 +24,9 @@ Users log in with your SaaS's own tokens; the agent layer validates them against
 
 **3. Nothing destructive happens without a human.**
 Free text becomes a **typed plan** the user approves before anything runs. Approved items execute **in parallel**, and when a tool can't resolve something ("assign it to sam" — which Sam?) the run **pauses mid-flight**, asks, and resumes exactly where it stopped. All of it survives crashes, because state is checkpointed in Postgres.
+
+**4. Agents and tools are folders, not wiring.**
+An agent is a folder: a `description.yaml` the router reads and a `graph.py` that builds it. A tool is a folder: a `run()`, a Pydantic schema, and a `prompt.yaml` with few-shots. Drop one in and it's discovered at startup — routable, rendered in the playground, targetable by evals — with **zero changes to core files**. `python -m agent_platform new-agent billing_agent` scaffolds one in seconds, and the three bundled agents are graduated templates to copy from: `echo_agent` (one node) → `support_agent` (ReAct loop) → `task_agent` (full plan-and-execute). Your tenth agent costs the same as your first.
 
 Around that core sits everything a team actually needs to ship: an LLM **router** choosing between specialized agents, **observability** (every run, step, tool call, and token persisted and browsable), a multi-turn **eval harness** (scripted conversations, versioned baselines, structural diffs, LLM judge), and a **prompt playground** that re-runs any node against real history without redeploying.
 
