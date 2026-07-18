@@ -1,0 +1,44 @@
+name: task_agent
+description: >
+  Flagship plan-and-execute agent for the demo task tracker. Decomposes a
+  natural-language request into a structured list of tasks, gets user
+  approval, creates all tasks in parallel, and resolves fuzzy people/project
+  names through mid-execution clarifications.
+capabilities:
+  - request decomposition into a typed task plan
+  - human-in-the-loop plan approval
+  - parallel task creation (Send fan-out)
+  - fuzzy name resolution with clarification round-trips
+  - project summaries
+tool_access:
+  categories:
+    - tasks
+routing_hints:
+  keywords:
+    - task
+    - tasks
+    - create
+    - assign
+    - todo
+    - project
+    - due
+    - priority
+    - plan
+    - set up
+  patterns:
+    - ".*create.*task.*"
+    - ".*assign.*"
+    - ".*set up.*"
+    - ".*add .* to .*project.*"
+  readiness_criteria: >
+    Use when the user wants something DONE in the tracker: create or plan
+    tasks, assign work, check a project's status. If they are asking how the
+    platform works, prefer support_agent.
+needs_checkpointer: true
+node_labels:
+  triage: Triage
+  safety_respond: Safety
+  planner: Planner
+  present_plan: Approval
+  execute_item: Creating tasks
+  format_results: Summary

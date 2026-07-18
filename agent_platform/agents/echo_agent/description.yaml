@@ -1,0 +1,20 @@
+name: echo_agent
+description: >
+  Minimal example agent — a single LLM node that answers the user's message
+  directly. Exists to show the smallest possible agent the registry can
+  discover: a description.yaml plus a graph.py with build_<name>_graph.
+capabilities:
+  - single-turn assistant responses
+tool_access:
+  categories: []
+routing_hints:
+  keywords:
+    - hello
+    - hi
+    - thanks
+  readiness_criteria: >
+    Last-resort fallback for small talk that neither task_agent (doing
+    work) nor support_agent (explaining the platform) covers.
+needs_checkpointer: false
+node_labels:
+  respond: Responding

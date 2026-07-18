@@ -1,0 +1,26 @@
+name: create_task
+version: "1.0"
+category: tasks
+tags: [tasks, create, assign]
+description: >
+  Creates a task in the tracker. projectName and assigneeName are
+  fuzzy-matched against the workspace's real projects and roster — always
+  pass through whatever the user said and let the backend resolve it. On an
+  ambiguous or unknown name the tool returns
+  { status: clarification_needed, answerKey, suggestedOptions } and the
+  platform asks the user to pick; never ask the user to spell a name
+  exactly yourself. Returns { status: created, taskId, ... } on success.
+few_shot_examples:
+  - user: "Create a task to review the pricing page, assign it to sam"
+    tool_call:
+      title: "Review the pricing page"
+      assigneeName: "sam"
+  - user: "Add 'Fix login bug' to the mobile project, high priority, due Friday"
+    tool_call:
+      title: "Fix login bug"
+      projectName: "mobile"
+      priority: "high"
+      dueDate: "Friday"
+  - user: "Task: order team offsite catering"
+    tool_call:
+      title: "Order team offsite catering"

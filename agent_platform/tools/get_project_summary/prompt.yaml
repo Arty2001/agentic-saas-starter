@@ -1,0 +1,15 @@
+name: get_project_summary
+version: "1.0"
+category: tasks
+tags: [tasks, project, summary]
+description: >
+  Returns a project's current state: open/completed/overdue task counts and
+  member count. projectName is fuzzy-matched; on an unknown name the tool
+  returns { status: clarification_needed, answerKey, suggestedOptions }.
+few_shot_examples:
+  - user: "How's the website project looking?"
+    tool_call:
+      projectName: "website"
+  - user: "Summarize Q3 Launch"
+    tool_call:
+      projectName: "Q3 Launch"

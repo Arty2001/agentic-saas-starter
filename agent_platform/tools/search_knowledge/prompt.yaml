@@ -1,0 +1,21 @@
+name: search_knowledge
+version: "1.0"
+category: knowledge
+tags: [documentation, search, support]
+description: >
+  Searches the platform documentation (architecture, agents, tools, evals,
+  observability) and returns the most relevant sections with their source
+  document names. Use whenever the user asks how something works, what a
+  concept means, or what the platform can do. Returns
+  { results: [{ source, heading, content, score }] } — an empty results list
+  means the docs don't cover the topic.
+few_shot_examples:
+  - user: "How does plan approval work?"
+    tool_call:
+      query: "plan approval interrupt"
+  - user: "What happens when a tool can't match a name?"
+    tool_call:
+      query: "clarification fuzzy name suggestedOptions"
+  - user: "How do I add my own agent?"
+    tool_call:
+      query: "adding agent description.yaml graph"

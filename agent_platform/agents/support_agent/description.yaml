@@ -1,0 +1,38 @@
+name: support_agent
+description: >
+  Built-in guide. Answers "how does X work" questions about this platform —
+  agents, tools, approvals, clarifications, evals — by searching the bundled
+  docs in a ReAct loop and answering with citations. It explains the
+  platform; it never changes anything.
+capabilities:
+  - documentation search (ReAct tool loop)
+  - grounded, cited answers about the platform's architecture and features
+  - redirecting action requests to task_agent
+tool_access:
+  categories:
+    - knowledge
+routing_hints:
+  keywords:
+    - how
+    - what is
+    - explain
+    - help
+    - question
+    - docs
+    - documentation
+    - mean
+    - difference
+    - why
+  patterns:
+    - ".*how (do|does|can).*"
+    - ".*what (is|are|does).*"
+    - ".*explain.*"
+    - ".*difference between.*"
+  readiness_criteria: >
+    Use for questions ABOUT the platform — concepts, capabilities, how-tos,
+    "what does X mean". If the user wants something DONE (create or plan
+    tasks, check a project), route to task_agent instead.
+needs_checkpointer: false
+node_labels:
+  agent: Thinking
+  tools: Searching docs

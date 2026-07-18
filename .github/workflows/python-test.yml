@@ -1,0 +1,64 @@
+name: python-test
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'agent_platform/**'
+      - 'tests/**'
+      - 'pyproject.toml'
+  pull_request:
+    paths:
+      - 'agent_platform/**'
+      - 'tests/**'
+      - 'pyproject.toml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.12']
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: agent_platform
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d agent_platform"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      AGENT_DB: postgresql+psycopg://postgres:postgres@localhost:5432/agent_platform
+      IS_DEV: "true"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Lint
+        run: ruff check agent_platform tests
+
+      - name: Type check
+        run: mypy agent_platform
+
+      - name: Test
+        run: pytest
