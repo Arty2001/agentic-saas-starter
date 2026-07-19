@@ -90,6 +90,7 @@ Then script your critical conversations in the **Tests** view so prompt and mode
 
 ## Learn more
 
+- [Roadmap](https://github.com/Arty2001/agentic-saas-starter/issues/9) — what's next, and why
 - [Architecture](docs/architecture.md) — the full diagram and a problem → solution → file map
 - [How to add a tool](docs/how-to-add-a-tool.md) · [How to add an agent](docs/how-to-add-an-agent.md)
 - [Migrations](MIGRATIONS.md) · [Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
